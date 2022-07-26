@@ -1,32 +1,13 @@
 from flask import Flask
+from flask import Flask, render_template
+
 
 app = Flask("hello")
 
 @app.route("/")
 @app.route("/hello")
 def hello():
-    return "Hello, World!!"
+    return render_template('index.html')
 
 @app.route("/contato")
-def contato():
-    return """
-    <html>
-        <head>
-            <title>Contato</title>
-            <style>
-                body{
-                    background-color: #333;
-                    color: #ffffff;
-                }
-                ul{
-                    list-style:none
-                }
-            </style>
-        </head>
-        <ul>
-            <li>Nome: Wesllei Garcia</li>
-            <li>Email: wesllei.garcia@gmail.com</li>
-            <li>Telefone (92) 99380-5887</li>
-        </ul>
-    </html>
-    """
+def contato(): return ""

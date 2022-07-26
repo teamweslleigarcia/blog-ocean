@@ -1,4 +1,10 @@
-li{
+*{
+    margin : none;
+}
+body{
     background-color: #333;
     color: #ffffff;
+}
+ul{
+    list-style:none
 }

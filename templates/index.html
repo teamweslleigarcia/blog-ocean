@@ -5,26 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
-    <title>Contato</title>
-    <style>
-        *{
-            margin : none;
-        }
-        body{
-            background-color: #333;
-            color: #ffffff;
-        }
-        ul{
-            list-style:none
-        }
-    </style>
+    <title>Meu Blog</title>
 </head>
 <body>
-    <h1>Contato</h1><hr />
-    <ul>
-        <li>Nome: Wesllei Garcia</li>
-        <li>Email: wesllei.garcia@gmail.com</li>
-        <li>Telefone (92) 99380-5887</li>
-    </ul>
+    <h1>Meu Blog</h1>
+    {% for post in posts %}
+        <article class="posts">
+            <header>
+                <div>
+                    <h1>{{post.title}}</h1>
+                    <div class="about">
+                        by: {{post.author}} on: {{post.created.strftime('%Y/%m/%d')}}
+                    </div>
+                </div>
+            </header>
+            <p class="body"> {{post.body}} </p>
+        </article>
+        {% if not loop.last%}
+            <hr >
+        {% endif %}
+    {% endfor %}
+
+
 </body>
 </html>

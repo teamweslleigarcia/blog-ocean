@@ -15,7 +15,7 @@ posts = [
     {
         "title" : "Meu Segundo Post",
         "body" : "Este é o corpo do texto",
-        "author" : "Wesllei",
+        "author" : "Wesllei Garcia",
         "created" : datetime(2022,7, 26, 0, 0)
     },
 ]
@@ -23,3 +23,9 @@ posts = [
 @app.route("/")
 def index():
     return render_template("index.html", posts=posts)
+
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+           

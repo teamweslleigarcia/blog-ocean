@@ -1,16 +1,21 @@
 {% extends "base.html" %}
 
-{%block title%} Login {%endblock%}
+{%block title%} Register {%endblock%}
 
 {% block content %}
     <form method="POST">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" placeholder="Informe seu nome aqui" required>
 
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Informe um email válido" required>
+
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" placeholder="Informe sua senha" required>
 
-        <input type="submit" value="Entrar" />
+        <input type="submit" value="Cadastrar" />
     </form>
+
+
 
 {%endblock%}

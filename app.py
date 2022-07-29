@@ -1,9 +1,10 @@
 from datetime import datetime
 from sqlite3 import IntegrityError
+from turtle import title
 from flask import Flask, redirect, render_template, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user
+from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
 
 
 app = Flask("hello")
@@ -71,23 +72,35 @@ def register():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
-    
+        return redirect(url_for('index'))
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        
+        username = request.form['username']
+        password = request.form['password']
         user = User.query.filter_by(username=username).first()
-        if user is None or user.check_password(password) :
-            flash("incorrect Password or User")
-            return redirect(url_for("login"))
+        if user is None or not user.check_password(password):
+            flash("Incorrect Username or Password")
+            return redirect(url_for('login'))
         login_user(user)
-        return redirect(url_for("index"))
-        
-    
+        return redirect(url_for('index'))
+
     return render_template("login.html")
 
 @app.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for("index"))
+
+@app.route("/create", methods=["POST", "GET"]) 
+@login_required
+def create():
+    if request.method == "POST":
+        title = request.form['title']
+        body = request.form['body']
+        try:
+            post = Post(title=title, body=body, author = current_user)
+            db.session.add(post)
+            db.session.commit()
+            return redirect(url_for("index"))
+        except IntegrityError:
+            flash("Error on create Post")     
+    return render_template("create.html")

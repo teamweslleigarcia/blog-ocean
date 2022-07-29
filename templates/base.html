@@ -8,8 +8,30 @@
     <title>{% block title %}{%endblock%} - Meu Blog</title>
 </head>
 <body>
-    <h1>Meu Blog</h1>
+    <nav>
+        <h1> Meu Blog </h1>
+        <ul>
+            {% if current_user.is_authenticated %}
+                <li><span>{{ current_user.username }}</span></li>
+                <li><a href="{{ url_for('create') }}">New Post</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('register') }}">Cadastrar</a></li>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+            {% endif %}
+        </ul>
+    </nav>
     <section class="content">
+        <header>
+            {% block header %}
+            {% endblock %}
+        </header>
+        {% for message in get_flashed_messages() %}
+            <div class="flash">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         {% block content %}
         {% endblock %}
     </section>

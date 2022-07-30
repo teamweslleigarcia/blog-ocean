@@ -46,7 +46,7 @@ db.create_all()
 
 @app.route("/")
 def index():
-    posts = Post.query.all()
+    posts = -Post.query.all()
     return render_template("index.html", posts=posts)
     
 @app.route("/register", methods=["POST", "GET"])

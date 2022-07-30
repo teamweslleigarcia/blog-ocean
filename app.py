@@ -16,6 +16,7 @@ app.config["SECRET_KEY"] = "pudim"
 db = SQLAlchemy(app)
 
 login = LoginManager(app)
+
 class Post(db.Model):
     __tablename__ = "posts"
     id = db.Column(db.Integer, primary_key= True, autoincrement= True)
@@ -46,7 +47,7 @@ db.create_all()
 
 @app.route("/")
 def index():
-    posts = -Post.query.all()
+    posts = Post.query.all(-Post.created).all()
     return render_template("index.html", posts=posts)
     
 @app.route("/register", methods=["POST", "GET"])
@@ -68,7 +69,7 @@ def register():
             flash("Username and email already exists")
         else:
             return redirect(url_for("login"))
-    return render_template("/register.html")
+    return render_template("register.html")
 
 @app.route("/login", methods=["POST", "GET"])
 def login():

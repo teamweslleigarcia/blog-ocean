@@ -1,6 +1,5 @@
 from datetime import datetime
 from sqlite3 import IntegrityError
-from turtle import title
 from flask import Flask, redirect, render_template, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash

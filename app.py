@@ -30,8 +30,8 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key= True, autoincrement= True)
     username = db.Column(db.String(20), nullable= False, unique = True, index = True)
     email = db.Column(db.String(64), nullable= False, unique = True)
-    password_hash = db.Column(db.String(128))
-    posts = db.relationship(Post, backref="author")
+    password_hash = db.Column(db.String(128), nullable=False)
+    posts = db.relationship('Post', backref="author")
     
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

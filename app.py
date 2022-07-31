@@ -1,20 +1,21 @@
 from datetime import datetime
 from sqlite3 import IntegrityError
-from turtle import title
 from flask import Flask, redirect, render_template, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import LoginManager, UserMixin, current_user, login_user, logout_user, login_required
+import os
 
-
-app = Flask("hello")
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
+app = Flask("blog")
+db_url = os.environ.get("DATABASE_URL") or "sqlite:///app.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = db_url.replace("postgres", "postgresql")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = "pudim"
 
 db = SQLAlchemy(app)
 
 login = LoginManager(app)
+
 class Post(db.Model):
     __tablename__ = "posts"
     id = db.Column(db.Integer, primary_key= True, autoincrement= True)
@@ -28,8 +29,8 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key= True, autoincrement= True)
     username = db.Column(db.String(20), nullable= False, unique = True, index = True)
     email = db.Column(db.String(64), nullable= False, unique = True)
-    password_hash = db.Column(db.String(128))
-    posts = db.relationship(Post, backref="author")
+    password_hash = db.Column(db.String(128), nullable=False)
+    posts = db.relationship('Post', backref="author")
     
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -45,13 +46,13 @@ db.create_all()
 
 @app.route("/")
 def index():
-    posts = Post.query.all()
+    posts = Post.query.order_by(-Post.created).all()
     return render_template("index.html", posts=posts)
     
 @app.route("/register", methods=["POST", "GET"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for("index.html"))
+        return redirect(url_for("index"))
     
     if request.method == "POST":
         username = request.form["username"]
@@ -67,7 +68,7 @@ def register():
             flash("Username and email already exists")
         else:
             return redirect(url_for("login"))
-    return render_template("/register.html")
+    return render_template("register.html")
 
 @app.route("/login", methods=["POST", "GET"])
 def login():

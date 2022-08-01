@@ -44,6 +44,7 @@ def load_user(id):
 
 db.create_all()
 
+
 @app.route("/")
 def index():
     posts = Post.query.order_by(-Post.created).all()

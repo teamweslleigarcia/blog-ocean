@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{%block title%} Página Incial {%endblock%}
+{% block title %} Página Incial {% endblock %}
 
 {% block header %}
     <h1>Posts</h1>
@@ -21,7 +21,7 @@
         </header>
         <p class="body"> {{post.body}} </p>
     </article>
-    {% if not loop.last%}
+    {% if not loop.last %}
         <hr >
     {% endif %}
 {% else %}

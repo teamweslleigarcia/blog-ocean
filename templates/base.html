@@ -1,34 +1,33 @@
 <html>
-<head>
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
-    <title>{% block title %}{% endblock %} - Meu Blog</title>
-</head>
-<body>
-    <nav>
-        <h1> Meu Blog </h1>
-        <ul>
-            {% if current_user.is_authenticated %}
-                <li><span>{{ current_user.username }}</span></li>
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
-            {% else %}
-                <li><a href="{{ url_for('register') }}">Cadastrar</a></li>
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-    <section class="content">
-        <header>
-            {% block header %}
-            {% endblock %}
-        </header>
-        {% for message in get_flashed_messages() %}
-            <div class="flash">
-                {{ message }}
-            </div>
-        {% endfor %}
+    <head>
+        <title> {% block title %}{% endblock %} - Meu Blog </title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    </head>
 
-        {% block content %}
-        {% endblock %}
-    </section>
-</body>
+    <body>
+        <nav>
+            <h1>Meu Blog</h1>
+            <ul>
+                {% if current_user.is_authenticated %}
+                    <li><span> {{ current_user.username }} </span></li>
+                    <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                    <li><a href="{{ url_for('login') }}">Log In</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        <section class="content">
+            <header>
+                {% block header %}
+                {% endblock %}
+            </header>
+            {% for message in get_flashed_messages() %}
+                <div class="flash"> {{ message }}</div>
+            {% endfor %}
+
+            {% block content %}
+            {% endblock %}
+        </section>
+    </body>
 </html>

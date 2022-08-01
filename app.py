@@ -44,7 +44,7 @@ def load_user(id):
 
 db.create_all()
 
-@app.route("/")
+@app.route('/')
 def index():
     posts = Post.query.order_by(-Post.created).all()
     return render_template("index.html", posts=posts)
@@ -52,7 +52,7 @@ def index():
 @app.route('/register', methods=["GET","POST"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('/index'))
     if request.method == "POST":
         username = request.form['username']
         email = request.form['email']
@@ -71,7 +71,7 @@ def register():
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('/index'))
     if request.method == "POST":
         username = request.form['username']
         password = request.form['password']
@@ -86,7 +86,7 @@ def login():
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('/index'))
 
 @app.route('/create', methods=["GET", "POST"])
 @login_required
@@ -98,7 +98,7 @@ def create():
             post = Post(title=title, body=body, author=current_user)
             db.session.add(post)
             db.session.commit()
-            return redirect(url_for('index'))
+            return redirect(url_for('/index'))
         except IntegrityError:
             flash("Error on create Post, try again later")
     return render_template('create.html')
